@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FNL 2026 Projections - Year-over-Year Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Reset and base */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #000; color: #fff; line-height: 1.5; }
+        
+        /* Layout */
+        .min-h-screen { min-height: 100vh; }
+        .p-2 { padding: 0.5rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .pl-4 { padding-left: 1rem; }
+        .pr-6 { padding-right: 1.5rem; }
+        .pt-2 { padding-top: 0.5rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        
+        /* Flexbox and Grid */
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .hidden { display: none; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .flex-wrap { flex-wrap: wrap; }
+        .space-y-1 > * + * { margin-top: 0.25rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        @media (min-width: 768px) {
+            .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .md\\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+        }
+        
+        /* Typography */
+        .text-white { color: #fff; }
+        .text-gray-300 { color: #d1d5db; }
+        .text-gray-400 { color: #9ca3af; }
+        .text-gray-500 { color: #6b7280; }
+        .text-red-400 { color: #f87171; }
+        .text-green-400 { color: #4ade80; }
+        .text-yellow-400 { color: #facc15; }
+        .text-orange-400 { color: #fb923c; }
+        .text-blue-400 { color: #60a5fa; }
+        .text-purple-400 { color: #c084fc; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .font-bold { font-weight: 700; }
+        .font-medium { font-weight: 500; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .uppercase { text-transform: uppercase; }
+        
+        /* Backgrounds */
+        .bg-gray-800 { background-color: #1f2937; }
+        .bg-gray-900 { background-color: #111827; }
+        .bg-red-900\\/20 { background-color: rgba(127, 29, 29, 0.2); }
+        .bg-red-900\\/30 { background-color: rgba(127, 29, 29, 0.3); }
+        .bg-red-900\\/40 { background-color: rgba(127, 29, 29, 0.4); }
+        .bg-red-900\\/50 { background-color: rgba(127, 29, 29, 0.5); }
+        .bg-green-900\\/20 { background-color: rgba(20, 83, 45, 0.2); }
+        .bg-green-900\\/30 { background-color: rgba(20, 83, 45, 0.3); }
+        .bg-green-900\\/40 { background-color: rgba(20, 83, 45, 0.4); }
+        .bg-green-900\\/50 { background-color: rgba(20, 83, 45, 0.5); }
+        .bg-yellow-900\\/20 { background-color: rgba(113, 63, 18, 0.2); }
+        .bg-yellow-900\\/30 { background-color: rgba(113, 63, 18, 0.3); }
+        .bg-yellow-900\\/40 { background-color: rgba(113, 63, 18, 0.4); }
+        .bg-yellow-900\\/50 { background-color: rgba(113, 63, 18, 0.5); }
+        .bg-orange-900\\/40 { background-color: rgba(124, 45, 18, 0.4); }
+        .bg-orange-900\\/50 { background-color: rgba(124, 45, 18, 0.5); }
+        .bg-blue-900\\/50 { background-color: rgba(30, 58, 138, 0.5); }
+        .bg-purple-900\\/50 { background-color: rgba(88, 28, 135, 0.5); }
+        .bg-cyan-900\\/30 { background-color: rgba(22, 78, 99, 0.3); }
+        
+        /* Borders */
+        .border { border-width: 1px; border-style: solid; }
+        .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+        .border-t { border-top-width: 1px; border-top-style: solid; }
+        .border-t-2 { border-top-width: 2px; border-top-style: solid; }
+        .border-gray-600 { border-color: #4b5563; }
+        .border-gray-700 { border-color: #374151; }
+        .border-gray-800 { border-color: #1f2937; }
+        .border-red-500\\/30 { border-color: rgba(239, 68, 68, 0.3); }
+        .border-red-500\\/50 { border-color: rgba(239, 68, 68, 0.5); }
+        .border-green-500\\/30 { border-color: rgba(34, 197, 94, 0.3); }
+        .border-green-500\\/50 { border-color: rgba(34, 197, 94, 0.5); }
+        .border-yellow-500\\/30 { border-color: rgba(234, 179, 8, 0.3); }
+        .border-yellow-500\\/50 { border-color: rgba(234, 179, 8, 0.5); }
+        .border-orange-500\\/50 { border-color: rgba(249, 115, 22, 0.5); }
+        .border-cyan-500\\/50 { border-color: rgba(6, 182, 212, 0.5); }
+        .rounded { border-radius: 0.25rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        
+        /* Width/Height */
+        .w-3 { width: 0.75rem; }
+        .w-full { width: 100%; }
+        .h-3 { height: 0.75rem; }
+        .h-64 { height: 16rem; }
+        .overflow-x-auto { overflow-x: auto; }
+        
+        /* Table */
+        table { border-collapse: collapse; }
+        
+        /* Custom */
+        .neon-cyan { color: #00FFD1; }
+        .neon-pink { color: #FF006B; }
+        .neon-yellow { color: #FFFF00; }
+        .bg-neon-cyan { background-color: #00FFD1; }
+        .bg-neon-pink { background-color: #FF006B; }
+        .border-neon-cyan { border-color: #00FFD1; }
+        .border-neon-pink { border-color: #FF006B; }
+        .tab-active { background-color: #00FFD1; color: #000; }
+        .chart-container { position: relative; height: 350px; }
+        
+        /* Buttons */
+        button { cursor: pointer; border: none; }
+        .hover\\:bg-gray-700:hover { background-color: #374151; }
+        
+        @media print {
+            body { background-color: #1a1a1a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body class="text-white p-6 min-h-screen">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold mb-2 neon-cyan">FNL 2026 Full Year Projections</h1>
+        <p class="text-gray-400">Based on YoY decline patterns vs Board Budget assumptions</p>
+        <p class="text-gray-500 text-sm mt-1">Generated: February 2026 | Data source: Wix Events API + Board Budget Pack</p>
+    </div>
+
+    <!-- Methodology Box -->
+    <div class="bg-gray-800 border border-gray-600 rounded-lg p-4 mb-8">
+        <h2 class="text-gray-300 font-bold text-sm mb-2">📊 Projection Methodology</h2>
+        <p class="text-gray-400 text-sm">
+            <strong class="text-green-400">Budget:</strong> Board assumes 180 tickets/event across 35 events (down from 41). 
+            <strong class="neon-pink">YoY Projection:</strong> Applies observed <strong class="neon-cyan">25% YoY decline rate</strong> to 2025 actuals.
+            The gap between these two views represents <strong class="neon-yellow">£20.4k revenue risk</strong> (or 583 RTW tickets at £35).
+        </p>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+            <div class="text-gray-400 text-sm mb-1">2024 Annual (Baseline)</div>
+            <div class="text-2xl font-bold">~11,000</div>
+            <div class="text-gray-500 text-xs mt-1">£135k revenue</div>
+        </div>
+        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+            <div class="text-gray-400 text-sm mb-1">2025 Annual</div>
+            <div class="text-2xl font-bold">~8,000</div>
+            <div class="text-red-400 text-sm">-27% vs 2024</div>
+            <div class="text-gray-500 text-xs mt-1">£98k revenue</div>
+        </div>
+        <div class="bg-green-900/30 p-4 rounded-lg border border-green-500/50">
+            <div class="text-gray-400 text-sm mb-1">2026 Budget</div>
+            <div class="text-2xl font-bold text-green-400">180/event</div>
+            <div class="text-green-400 text-sm">Board target</div>
+            <div class="text-gray-500 text-xs mt-1">35 events planned</div>
+        </div>
+        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+            <div class="text-gray-400 text-sm mb-1">2026 YoY Projected</div>
+            <div class="text-2xl font-bold">~6,000</div>
+            <div class="text-red-400 text-sm">-25% vs 2025</div>
+            <div class="text-gray-500 text-xs mt-1">£74k revenue</div>
+        </div>
+        <div class="bg-cyan-900/30 p-4 rounded-lg border border-cyan-500/50">
+            <div class="text-gray-400 text-sm mb-1">💡 RTW Recovery Target</div>
+            <div class="text-2xl font-bold neon-cyan">+583 tickets</div>
+            <div class="neon-cyan text-sm">to close £20.4k gap</div>
+            <div class="text-gray-500 text-xs mt-1">at £35/ticket</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-6 flex-wrap no-print">
+        <button onclick="showTab('projections')" id="tab-projections" class="px-4 py-2 rounded-lg text-sm font-medium tab-active">Monthly Projections</button>
+        <button onclick="showTab('risk')" id="tab-risk" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-800 text-gray-300 hover:bg-gray-700">Risk Analysis</button>
+        <button onclick="showTab('recovery')" id="tab-recovery" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-800 text-gray-300 hover:bg-gray-700">Recovery Scenarios</button>
+        <button onclick="showTab('timeline')" id="tab-timeline" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-800 text-gray-300 hover:bg-gray-700">Full Timeline</button>
+        <button onclick="showTab('revenue')" id="tab-revenue" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-800 text-gray-300 hover:bg-gray-700">Revenue Impact</button>
+        <button onclick="showTab('scenarios')" id="tab-scenarios" class="px-4 py-2 rounded-lg text-sm font-medium bg-gray-800 text-gray-300 hover:bg-gray-700">Scenarios</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="bg-gray-900 rounded-lg p-6 mb-8">
+        <!-- Projections Tab -->
+        <div id="content-projections" class="tab-content">
+            <h3 class="text-lg font-bold mb-4">2026 Monthly Ticket Projections vs Historical</h3>
+            <div class="chart-container mb-6">
+                <canvas id="projectionsChart"></canvas>
+            </div>
+            
+            <!-- Data Table -->
+            <div class="overflow-x-auto">
+                <table class="text-sm" style="width: auto; min-width: 600px;">
+                    <thead>
+                        <tr class="text-gray-400 border-b border-gray-700">
+                            <th class="text-left py-2 pr-6">Month</th>
+                            <th class="text-right py-2 px-4">2024</th>
+                            <th class="text-right py-2 px-4">2025</th>
+                            <th class="text-right py-2 px-4">Budget</th>
+                            <th class="text-right py-2 px-4">YoY Proj</th>
+                            <th class="text-right py-2 pl-4">Gap</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projections-table"></tbody>
+                </table>
+                <p class="text-gray-500 text-xs mt-2">* Projected based on 25% YoY decline rate | ✓ Actual data</p>
+            </div>
+        </div>
+
+        <!-- Risk Analysis Tab -->
+        <div id="content-risk" class="tab-content hidden">
+            <h3 class="text-lg font-bold mb-4">Monthly Revenue Risk Analysis</h3>
+            <p class="text-gray-400 text-sm mb-6">Months ranked by risk severity - where the budget gap hits hardest</p>
+            
+            <!-- Risk Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-red-900/40 border border-red-500/50 p-4 rounded-lg text-center">
+                    <div class="text-red-400 text-xs uppercase mb-1">Critical</div>
+                    <div class="text-2xl font-bold text-white">1 month</div>
+                    <div class="text-gray-500 text-xs">Below 100 tickets</div>
+                </div>
+                <div class="bg-yellow-900/40 border border-yellow-500/50 p-4 rounded-lg text-center">
+                    <div class="text-yellow-400 text-xs uppercase mb-1">Severe</div>
+                    <div class="text-2xl font-bold text-white">6 months</div>
+                    <div class="text-gray-500 text-xs">100-130 tickets</div>
+                </div>
+                <div class="bg-orange-900/40 border border-orange-500/50 p-4 rounded-lg text-center">
+                    <div class="text-orange-400 text-xs uppercase mb-1">Moderate</div>
+                    <div class="text-2xl font-bold text-white">4 months</div>
+                    <div class="text-gray-500 text-xs">130-150 tickets</div>
+                </div>
+                <div class="bg-green-900/40 border border-green-500/50 p-4 rounded-lg text-center">
+                    <div class="text-green-400 text-xs uppercase mb-1">Low Risk</div>
+                    <div class="text-2xl font-bold text-white">1 month</div>
+                    <div class="text-gray-500 text-xs">Above 145 tickets</div>
+                </div>
+            </div>
+
+            <!-- Risk Table -->
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-gray-400 border-b border-gray-700">
+                            <th class="text-left py-2">Month</th>
+                            <th class="text-right py-2">YoY Proj</th>
+                            <th class="text-right py-2">Gap vs Budget</th>
+                            <th class="text-right py-2">Revenue Risk</th>
+                            <th class="text-right py-2">Events</th>
+                            <th class="text-left py-2 pl-4">Status</th>
+                            <th class="text-left py-2 pl-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="risk-table"></tbody>
+                    <tfoot>
+                        <tr class="border-t-2 border-gray-600 font-bold">
+                            <td class="py-3 text-white">TOTAL</td>
+                            <td class="py-3 text-right">—</td>
+                            <td class="py-3 text-right text-red-400">-600</td>
+                            <td class="py-3 text-right text-red-400">£20,405</td>
+                            <td class="py-3 text-right">35</td>
+                            <td class="py-3"></td>
+                            <td class="py-3"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Quarterly Breakdown -->
+            <h4 class="text-white font-medium mb-3">Quarterly Risk Breakdown</h4>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <div class="text-gray-400 text-sm mb-1">Q1 (Jan-Mar)</div>
+                    <div class="text-xl font-bold text-red-400">£6.2k risk</div>
+                    <div class="text-gray-500 text-xs">-59 avg gap × 9 events</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <div class="text-gray-400 text-sm mb-1">Q2 (Apr-Jun)</div>
+                    <div class="text-xl font-bold text-yellow-400">£4.9k risk</div>
+                    <div class="text-gray-500 text-xs">-47 avg gap × 9 events</div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <div class="text-gray-400 text-sm mb-1">Q3 (Jul-Sep)</div>
+                    <div class="text-xl font-bold text-green-400">£4.2k risk</div>
+                    <div class="text-gray-500 text-xs">-40 avg gap × 9 events</div>
+                </div>
+                <div class="bg-red-900/30 border border-red-500/30 p-4 rounded-lg">
+                    <div class="text-gray-400 text-sm mb-1">Q4 (Oct-Dec)</div>
+                    <div class="text-xl font-bold text-red-400">£6.8k risk</div>
+                    <div class="text-gray-500 text-xs">-73 avg gap × 8 events</div>
+                    <div class="text-red-400 text-xs mt-1">⚠️ Highest risk quarter</div>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h4 class="neon-cyan font-medium mb-3">💡 Risk Mitigation Recommendations</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p class="text-white font-medium mb-2">November (Critical)</p>
+                        <ul class="text-gray-300 space-y-1">
+                            <li>• Consider reducing to 2 events or cancelling</li>
+                            <li>• Aggressive early-bird pricing if running</li>
+                            <li>• Partner with corporate wellness programmes</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="text-white font-medium mb-2">Q4 Overall</p>
+                        <ul class="text-gray-300 space-y-1">
+                            <li>• Variable cost model for Oct-Dec events</li>
+                            <li>• Pre-sell Q4 tickets during summer peak</li>
+                            <li>• Consider seasonal themes (Halloween, Christmas)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recovery Scenarios Tab -->
+        <div id="content-recovery" class="tab-content hidden">
+            <h3 class="text-lg font-bold mb-2">Recovery Scenarios to Close £20.4k Gap</h3>
+            <p class="text-gray-400 text-sm mb-6">Multiple pathways to recover the projected revenue shortfall from core events</p>
+            
+            <!-- Target Banner -->
+            <div class="bg-gray-800 border border-gray-600 rounded-lg p-4 mb-6 flex items-center justify-between">
+                <div>
+                    <div class="text-gray-400 text-sm">Target to Recover</div>
+                    <div class="text-3xl font-bold text-red-400">£20,405</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-gray-400 text-sm">From 35 events × 50 ticket gap</div>
+                    <div class="text-gray-500 text-xs">@ £11.67 avg ticket price</div>
+                </div>
+            </div>
+
+            <!-- Recovery Levers -->
+            <h4 class="text-white font-medium mb-3">Available Recovery Levers</h4>
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-gray-400 border-b border-gray-700">
+                            <th class="text-left py-2">Lever</th>
+                            <th class="text-right py-2">Unit Value</th>
+                            <th class="text-right py-2">Units to Cover All</th>
+                            <th class="text-left py-2 pl-4">Feasibility</th>
+                            <th class="text-left py-2 pl-4">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-white">RTW Extra Tickets</td>
+                            <td class="py-2 text-right neon-cyan">£35</td>
+                            <td class="py-2 text-right">583</td>
+                            <td class="py-2 pl-4"><span class="px-2 py-1 rounded text-xs bg-yellow-900/50 text-yellow-400">MEDIUM</span></td>
+                            <td class="py-2 pl-4 text-gray-500 text-xs">RTW targeting 5k capacity</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-white">HQ Extra Tickets</td>
+                            <td class="py-2 text-right neon-cyan">£45</td>
+                            <td class="py-2 text-right">453</td>
+                            <td class="py-2 pl-4"><span class="px-2 py-1 rounded text-xs bg-yellow-900/50 text-yellow-400">MEDIUM</span></td>
+                            <td class="py-2 pl-4 text-gray-500 text-xs">HQ targeting 4.5k capacity</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-white">New Core Events Sponsor</td>
+                            <td class="py-2 text-right neon-cyan">£10-20k</td>
+                            <td class="py-2 text-right">1-2 deals</td>
+                            <td class="py-2 pl-4"><span class="px-2 py-1 rounded text-xs bg-yellow-900/50 text-yellow-400">MEDIUM</span></td>
+                            <td class="py-2 pl-4 text-gray-500 text-xs">Gym Nation, drinks brand, sports nutrition</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-white">RTW Sponsor Uplift</td>
+                            <td class="py-2 text-right neon-cyan">£10k+</td>
+                            <td class="py-2 text-right">1 upgrade</td>
+                            <td class="py-2 pl-4"><span class="px-2 py-1 rounded text-xs bg-yellow-900/50 text-yellow-400">MEDIUM</span></td>
+                            <td class="py-2 pl-4 text-gray-500 text-xs">ON Running / Prime upgrade to title</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-white">HQ Sponsor Uplift</td>
+                            <td class="py-2 text-right neon-cyan">£10k+</td>
+                            <td class="py-2 text-right">1 upgrade</td>
+                            <td class="py-2 pl-4"><span class="px-2 py-1 rounded text-xs bg-yellow-900/50 text-yellow-400">MEDIUM</span></td>
+                            <td class="py-2 pl-4 text-gray-500 text-xs">New title sponsor opportunity</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-white">Additional Licensed Run</td>
+                            <td class="py-2 text-right neon-cyan">£5k margin</td>
+                            <td class="py-2 text-right">4 events</td>
+                            <td class="py-2 pl-4"><span class="px-2 py-1 rounded text-xs bg-green-900/50 text-green-400">HIGH</span></td>
+                            <td class="py-2 pl-4 text-gray-500 text-xs">Battersea model proven</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-white">Corporate Wellness Bookings</td>
+                            <td class="py-2 text-right neon-cyan">£500/group</td>
+                            <td class="py-2 text-right">41 groups</td>
+                            <td class="py-2 pl-4"><span class="px-2 py-1 rounded text-xs bg-yellow-900/50 text-yellow-400">MEDIUM</span></td>
+                            <td class="py-2 pl-4 text-gray-500 text-xs">B2B channel development</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Blended Scenarios -->
+            <h4 class="text-white font-medium mb-3">Recommended Blended Scenarios</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Scenario A: RTW Focus -->
+                <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h5 class="text-white font-medium">Scenario A: RTW Focus</h5>
+                        <span class="px-2 py-1 rounded text-xs bg-green-900/50 text-green-400">RECOMMENDED</span>
+                    </div>
+                    <div class="space-y-2 text-sm mb-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">+400 RTW tickets @ £35</span>
+                            <span class="neon-cyan">£14,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Small core sponsor deal</span>
+                            <span class="neon-cyan">£6,405</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-700 pt-2 font-bold">
+                            <span class="text-white">Total Recovery</span>
+                            <span class="text-green-400">£20,405 ✓</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        <strong>Why:</strong> RTW has proven demand, sponsor tops up remainder
+                    </div>
+                </div>
+
+                <!-- Scenario B: Sponsor Focus -->
+                <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h5 class="text-white font-medium">Scenario B: Sponsor Focus</h5>
+                        <span class="px-2 py-1 rounded text-xs bg-yellow-900/50 text-yellow-400">LOWER RISK</span>
+                    </div>
+                    <div class="space-y-2 text-sm mb-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">New core events sponsor</span>
+                            <span class="neon-cyan">£15,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">+154 RTW tickets @ £35</span>
+                            <span class="neon-cyan">£5,405</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-700 pt-2 font-bold">
+                            <span class="text-white">Total Recovery</span>
+                            <span class="text-green-400">£20,405 ✓</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        <strong>Why:</strong> Less dependent on ticket sales, diversifies revenue
+                    </div>
+                </div>
+
+                <!-- Scenario C: Diversified -->
+                <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h5 class="text-white font-medium">Scenario C: Diversified</h5>
+                        <span class="px-2 py-1 rounded text-xs bg-blue-900/50 text-blue-400">BALANCED</span>
+                    </div>
+                    <div class="space-y-2 text-sm mb-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">+200 RTW tickets @ £35</span>
+                            <span class="neon-cyan">£7,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">+150 HQ tickets @ £45</span>
+                            <span class="neon-cyan">£6,750</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Small sponsor deal</span>
+                            <span class="neon-cyan">£6,655</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-700 pt-2 font-bold">
+                            <span class="text-white">Total Recovery</span>
+                            <span class="text-green-400">£20,405 ✓</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        <strong>Why:</strong> Spreads risk across multiple revenue streams
+                    </div>
+                </div>
+
+                <!-- Scenario D: Franchise Growth -->
+                <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h5 class="text-white font-medium">Scenario D: Franchise Growth</h5>
+                        <span class="px-2 py-1 rounded text-xs bg-purple-900/50 text-purple-400">STRATEGIC</span>
+                    </div>
+                    <div class="space-y-2 text-sm mb-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">+1 licensed run (4 events)</span>
+                            <span class="neon-cyan">£5,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Sponsor uplift (RTW or HQ)</span>
+                            <span class="neon-cyan">£10,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">+154 RTW tickets @ £35</span>
+                            <span class="neon-cyan">£5,405</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-700 pt-2 font-bold">
+                            <span class="text-white">Total Recovery</span>
+                            <span class="text-green-400">£20,405 ✓</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        <strong>Why:</strong> Builds long-term franchise revenue stream
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Comparison -->
+            <h4 class="text-white font-medium mb-3">Scenario Comparison</h4>
+            <div class="h-64 mb-6">
+                <canvas id="recoveryChart"></canvas>
+            </div>
+
+            <!-- Key Considerations -->
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h4 class="neon-cyan font-medium mb-3">💡 Key Considerations</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p class="text-white font-medium mb-2">Sponsorship Opportunities</p>
+                        <ul class="text-gray-300 space-y-1">
+                            <li>• <strong>Gym Nation</strong> - venue partner, natural fit for weekly events</li>
+                            <li>• <strong>Sports nutrition</strong> - SiS, Maurten, Precision Fuel</li>
+                            <li>• <strong>Drinks brands</strong> - Prime (existing), Tenzing, Trip</li>
+                            <li>• <strong>Running brands</strong> - ON (existing), Hoka, New Balance</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="text-white font-medium mb-2">Ticket Growth Strategy</p>
+                        <ul class="text-gray-300 space-y-1">
+                            <li>• RTW: +400 = 8% increase on 5k target (achievable)</li>
+                            <li>• HQ: +150 = 3% increase on 4.5k target (conservative)</li>
+                            <li>• Early bird pricing to drive urgency</li>
+                            <li>• Corporate group packages for flagship events</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Tab -->
+        <div id="content-timeline" class="tab-content hidden">
+            <h3 class="text-lg font-bold mb-4">Complete Timeline: 2024 → 2026</h3>
+            <div class="chart-container mb-6">
+                <canvas id="timelineChart"></canvas>
+            </div>
+            
+            <div class="mt-4 flex gap-6 justify-center text-sm flex-wrap">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                    <span class="text-gray-400">2024 Actual</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <span class="text-gray-400">2025 Actual</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full" style="background-color: #00FFD1;"></div>
+                    <span class="text-gray-400">2026 Actual</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full" style="background-color: #FF006B;"></div>
+                    <span class="text-gray-400">2026 Projected</span>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-gray-800 rounded-lg">
+                <h4 class="text-white font-medium mb-2">Trajectory Analysis</h4>
+                <ul class="text-gray-400 text-sm space-y-1">
+                    <li>• <strong class="text-green-400">2024 Peak:</strong> 250 tickets (Jun-Jul)</li>
+                    <li>• <strong class="text-yellow-400">2025 Peak:</strong> 194 tickets (Jul) - down 22%</li>
+                    <li>• <strong class="neon-pink">2026 Projected Peak:</strong> 146 tickets (Jul) - down another 25%</li>
+                    <li>• <strong class="text-red-400">2026 Projected Low:</strong> 86 tickets (Nov) - below critical threshold</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Revenue Tab -->
+        <div id="content-revenue" class="tab-content hidden">
+            <h3 class="text-lg font-bold mb-4">Revenue Impact Analysis</h3>
+            <div class="chart-container mb-6">
+                <canvas id="revenueChart"></canvas>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-green-900/30 border border-green-500/50 p-4 rounded-lg">
+                    <h4 class="text-green-400 font-medium mb-2">2024 Baseline</h4>
+                    <div class="text-2xl font-bold">£135k</div>
+                    <div class="text-gray-400 text-sm">~11,000 tickets</div>
+                </div>
+                <div class="bg-yellow-900/30 border border-yellow-500/50 p-4 rounded-lg">
+                    <h4 class="text-yellow-400 font-medium mb-2">2025 (Actual/Est)</h4>
+                    <div class="text-2xl font-bold">£98k</div>
+                    <div class="text-gray-400 text-sm">~8,000 tickets</div>
+                    <div class="text-red-400 text-sm">-£37k vs 2024</div>
+                </div>
+                <div class="bg-red-900/30 border border-red-500/50 p-4 rounded-lg">
+                    <h4 class="text-red-400 font-medium mb-2">2026 Projected</h4>
+                    <div class="text-2xl font-bold">£74k</div>
+                    <div class="text-gray-400 text-sm">~6,000 tickets</div>
+                    <div class="text-red-400 text-sm">-£61k vs 2024</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenarios Tab -->
+        <div id="content-scenarios" class="tab-content hidden">
+            <h3 class="text-lg font-bold mb-4">2026 Scenario Analysis</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Optimistic -->
+                <div class="bg-green-900/20 border border-green-500/30 p-6 rounded-lg">
+                    <h4 class="text-green-400 font-bold mb-4">🟢 Optimistic Scenario</h4>
+                    <p class="text-gray-400 text-sm mb-4">Decline slows to 15% YoY due to interventions</p>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-gray-500 text-xs">Annual Tickets</div>
+                            <div class="text-xl font-bold">~6,800</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-500 text-xs">Annual Revenue</div>
+                            <div class="text-xl font-bold">£83k</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-500 text-xs">vs 2024 Baseline</div>
+                            <div class="text-red-400">-38%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Base Case -->
+                <div class="bg-yellow-900/20 border border-yellow-500/30 p-6 rounded-lg">
+                    <h4 class="text-yellow-400 font-bold mb-4">🟡 Base Case Scenario</h4>
+                    <p class="text-gray-400 text-sm mb-4">Current trajectory continues at 25% YoY decline</p>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-gray-500 text-xs">Annual Tickets</div>
+                            <div class="text-xl font-bold">~6,000</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-500 text-xs">Annual Revenue</div>
+                            <div class="text-xl font-bold">£74k</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-500 text-xs">vs 2024 Baseline</div>
+                            <div class="text-red-400">-45%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pessimistic -->
+                <div class="bg-red-900/20 border border-red-500/30 p-6 rounded-lg">
+                    <h4 class="text-red-400 font-bold mb-4">🔴 Pessimistic Scenario</h4>
+                    <p class="text-gray-400 text-sm mb-4">Decline accelerates to 35% YoY</p>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-gray-500 text-xs">Annual Tickets</div>
+                            <div class="text-xl font-bold">~5,200</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-500 text-xs">Annual Revenue</div>
+                            <div class="text-xl font-bold">£64k</div>
+                        </div>
+                        <div>
+                            <div class="text-gray-500 text-xs">vs 2024 Baseline</div>
+                            <div class="text-red-400">-53%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Critical thresholds -->
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h4 class="text-white font-medium mb-3">⚠️ Critical Thresholds</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p class="text-gray-300 mb-2">
+                            <strong class="text-yellow-400">Warning Level (150 tickets):</strong> Projected to be breached in most months except peak summer
+                        </p>
+                        <p class="text-gray-300">
+                            <strong class="text-red-400">Critical Level (100 tickets):</strong> November 2026 projected at 86 tickets - well below viability
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="bg-gray-900 rounded-lg p-6 mb-8">
+        <h3 class="text-lg font-bold mb-4 neon-pink">2026 Projection Summary</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h4 class="text-white font-medium mb-3">Monthly Projections (Base Case):</h4>
+                <div class="grid grid-cols-4 gap-2 text-sm" id="monthly-grid"></div>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-medium mb-3">Key Numbers:</h4>
+                <table class="w-full text-sm">
+                    <tbody>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-gray-400">2026 Budget (per event)</td>
+                            <td class="py-2 text-right font-bold text-green-400">180 tickets</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-gray-400">2026 YoY Projection (avg)</td>
+                            <td class="py-2 text-right font-bold neon-pink">130 tickets</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-gray-400">Gap per event</td>
+                            <td class="py-2 text-right font-bold text-red-400">-50 tickets</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-gray-400">Annual Revenue Risk (35 events)</td>
+                            <td class="py-2 text-right font-bold text-red-400">£20.4k</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-2 text-gray-400">RTW Tickets to Cover Gap</td>
+                            <td class="py-2 text-right font-bold neon-cyan">583 tickets</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-gray-400">Lowest Month (Nov 2026)</td>
+                            <td class="py-2 text-right font-bold text-red-400">86 tickets</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- YoY Analysis Section -->
+    <div class="bg-gray-900 rounded-lg p-6">
+        <h3 class="text-lg font-bold mb-4 neon-cyan">Year-over-Year Analysis Summary</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h4 class="text-white font-medium mb-2">What The Data Shows:</h4>
+                <ol class="text-gray-300 text-sm space-y-2">
+                    <li><span class="neon-cyan font-bold">1.</span> <strong>Genuine YoY decline of ~26%</strong> - not just seasonality</li>
+                    <li><span class="neon-cyan font-bold">2.</span> <strong>Two consecutive years of decline</strong> - 2025 down on 2024, 2026 down on 2025</li>
+                    <li><span class="neon-cyan font-bold">3.</span> <strong>Sales velocity collapsed 68%</strong> - people buying later/slower</li>
+                    <li><span class="neon-cyan font-bold">4.</span> <strong>Jan 2026 is 45% below Jan 2024</strong> - demand erosion accelerating</li>
+                </ol>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-medium mb-2">Business Implications:</h4>
+                <ul class="text-gray-300 text-sm space-y-2">
+                    <li>• Weekly events losing ~50 tickets vs 2024 baseline</li>
+                    <li>• Estimated £600-800/event revenue loss</li>
+                    <li>• ~£61k cumulative revenue impact by end of 2026</li>
+                    <li>• Urgency/demand signals have weakened significantly</li>
+                    <li>• Events still sell out but take much longer</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 text-center text-gray-500 text-sm">
+        <p>Friday Night Lights | Weekly Run Club Analysis | Data through January 2026</p>
+        <p class="mt-1">Projections based on observed YoY patterns - actual results may vary</p>
+    </div>
+
+    <script>
+        // Data
+        const monthlyData = [
+            { month: 'Jan', avg2024: 200, avg2025: 146, proj2026: 110, isActual: true },
+            { month: 'Feb', avg2024: 232, avg2025: 168, proj2026: 126, isActual: false },
+            { month: 'Mar', avg2024: 230, avg2025: 171, proj2026: 128, isActual: false },
+            { month: 'Apr', avg2024: 241, avg2025: 171, proj2026: 128, isActual: false },
+            { month: 'May', avg2024: 246, avg2025: 183, proj2026: 137, isActual: false },
+            { month: 'Jun', avg2024: 250, avg2025: 180, proj2026: 135, isActual: false },
+            { month: 'Jul', avg2024: 250, avg2025: 194, proj2026: 146, isActual: false },
+            { month: 'Aug', avg2024: 245, avg2025: 189, proj2026: 142, isActual: false },
+            { month: 'Sep', avg2024: 240, avg2025: 175, proj2026: 131, isActual: false },
+            { month: 'Oct', avg2024: 235, avg2025: 172, proj2026: 129, isActual: false },
+            { month: 'Nov', avg2024: 220, avg2025: 114, proj2026: 86, isActual: false },
+            { month: 'Dec', avg2024: 200, avg2025: 140, proj2026: 105, isActual: false },
+        ];
+
+        const timelineData = [
+            { period: 'Jan 24', tickets: 200, year: '2024' },
+            { period: 'Feb 24', tickets: 232, year: '2024' },
+            { period: 'Mar 24', tickets: 230, year: '2024' },
+            { period: 'Apr 24', tickets: 241, year: '2024' },
+            { period: 'May 24', tickets: 246, year: '2024' },
+            { period: 'Jun 24', tickets: 250, year: '2024' },
+            { period: 'Jul 24', tickets: 250, year: '2024' },
+            { period: 'Aug 24', tickets: 245, year: '2024' },
+            { period: 'Sep 24', tickets: 240, year: '2024' },
+            { period: 'Oct 24', tickets: 235, year: '2024' },
+            { period: 'Nov 24', tickets: 220, year: '2024' },
+            { period: 'Dec 24', tickets: 200, year: '2024' },
+            { period: 'Jan 25', tickets: 146, year: '2025' },
+            { period: 'Feb 25', tickets: 168, year: '2025' },
+            { period: 'Mar 25', tickets: 171, year: '2025' },
+            { period: 'Apr 25', tickets: 171, year: '2025' },
+            { period: 'May 25', tickets: 183, year: '2025' },
+            { period: 'Jun 25', tickets: 180, year: '2025' },
+            { period: 'Jul 25', tickets: 194, year: '2025' },
+            { period: 'Aug 25', tickets: 189, year: '2025' },
+            { period: 'Sep 25', tickets: 175, year: '2025' },
+            { period: 'Oct 25', tickets: 172, year: '2025' },
+            { period: 'Nov 25', tickets: 114, year: '2025' },
+            { period: 'Dec 25', tickets: 140, year: '2025' },
+            { period: 'Jan 26', tickets: 110, year: '2026-actual' },
+            { period: 'Feb 26', tickets: 126, year: '2026-proj' },
+            { period: 'Mar 26', tickets: 128, year: '2026-proj' },
+            { period: 'Apr 26', tickets: 128, year: '2026-proj' },
+            { period: 'May 26', tickets: 137, year: '2026-proj' },
+            { period: 'Jun 26', tickets: 135, year: '2026-proj' },
+            { period: 'Jul 26', tickets: 146, year: '2026-proj' },
+            { period: 'Aug 26', tickets: 142, year: '2026-proj' },
+            { period: 'Sep 26', tickets: 131, year: '2026-proj' },
+            { period: 'Oct 26', tickets: 129, year: '2026-proj' },
+            { period: 'Nov 26', tickets: 86, year: '2026-proj' },
+            { period: 'Dec 26', tickets: 105, year: '2026-proj' },
+        ];
+
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(el => {
+                el.classList.remove('tab-active');
+                el.classList.add('bg-gray-800', 'text-gray-300');
+            });
+            
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+            const activeTab = document.getElementById('tab-' + tabName);
+            activeTab.classList.add('tab-active');
+            activeTab.classList.remove('bg-gray-800', 'text-gray-300');
+        }
+
+        // Populate projections table
+        const tableBody = document.getElementById('projections-table');
+        const budget2026 = 180; // Board budget target
+        monthlyData.forEach(d => {
+            const gap = d.proj2026 - budget2026;
+            const row = document.createElement('tr');
+            row.className = 'border-b border-gray-800';
+            row.innerHTML = `
+                <td class="py-2 text-white pr-6">${d.month}</td>
+                <td class="py-2 text-right text-green-400 px-4">${d.avg2024}</td>
+                <td class="py-2 text-right text-yellow-400 px-4">${d.avg2025}</td>
+                <td class="py-2 text-right text-green-400 font-medium px-4">${budget2026}</td>
+                <td class="py-2 text-right font-medium px-4 ${d.isActual ? 'neon-cyan' : 'neon-pink'}">${d.proj2026} ${d.isActual ? '✓' : '*'}</td>
+                <td class="py-2 text-right text-red-400 font-bold pl-4">${gap}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Populate risk table (sorted by severity)
+        const riskTableBody = document.getElementById('risk-table');
+        const avgTicketPriceRisk = 11.67;
+        const eventsPerMonthMap = { Jan: 3, Feb: 3, Mar: 3, Apr: 3, May: 3, Jun: 3, Jul: 3, Aug: 3, Sep: 3, Oct: 3, Nov: 2, Dec: 3 };
+        
+        // Sort by gap (worst first)
+        const sortedByRisk = [...monthlyData].sort((a, b) => a.proj2026 - b.proj2026);
+        
+        sortedByRisk.forEach(d => {
+            const gap = d.proj2026 - budget2026;
+            const events = eventsPerMonthMap[d.month];
+            const revenueRisk = Math.abs(gap) * avgTicketPriceRisk * events;
+            
+            let status, statusClass, action;
+            if (d.proj2026 < 100) {
+                status = '🔴 CRITICAL';
+                statusClass = 'bg-red-900/50 text-red-400';
+                action = 'Cancel or reduce events';
+            } else if (d.proj2026 < 130) {
+                status = '🟠 SEVERE';
+                statusClass = 'bg-yellow-900/50 text-yellow-400';
+                action = 'Early-bird push';
+            } else if (d.proj2026 < 145) {
+                status = '🟡 MODERATE';
+                statusClass = 'bg-orange-900/50 text-orange-400';
+                action = 'Monitor closely';
+            } else {
+                status = '🟢 LOW';
+                statusClass = 'bg-green-900/50 text-green-400';
+                action = 'Standard ops';
+            }
+            
+            const row = document.createElement('tr');
+            row.className = 'border-b border-gray-800';
+            row.innerHTML = `
+                <td class="py-2 text-white font-medium">${d.month}</td>
+                <td class="py-2 text-right ${d.proj2026 < 100 ? 'text-red-400 font-bold' : d.proj2026 < 130 ? 'text-yellow-400' : 'text-gray-300'}">${d.proj2026}</td>
+                <td class="py-2 text-right text-red-400">${gap}</td>
+                <td class="py-2 text-right text-red-400">£${Math.round(revenueRisk).toLocaleString()}</td>
+                <td class="py-2 text-right text-gray-400">${events}</td>
+                <td class="py-2 pl-4"><span class="px-2 py-1 rounded text-xs font-medium ${statusClass}">${status}</span></td>
+                <td class="py-2 pl-4 text-gray-400 text-xs">${action}</td>
+            `;
+            riskTableBody.appendChild(row);
+        });
+
+        // Populate monthly grid
+        const monthlyGrid = document.getElementById('monthly-grid');
+        monthlyData.forEach(d => {
+            const div = document.createElement('div');
+            let bgClass = 'bg-gray-800';
+            if (d.proj2026 < 100) bgClass = 'bg-red-900/50';
+            else if (d.proj2026 < 150) bgClass = 'bg-yellow-900/50';
+            div.className = `p-2 rounded ${bgClass}`;
+            div.innerHTML = `
+                <div class="text-gray-400 text-xs">${d.month}</div>
+                <div class="font-bold">${d.proj2026}</div>
+            `;
+            monthlyGrid.appendChild(div);
+        });
+
+        // Charts
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: { color: '#888' }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#888' },
+                    grid: { color: '#333' }
+                },
+                y: {
+                    ticks: { color: '#888' },
+                    grid: { color: '#333' },
+                    min: 0,
+                    max: 300
+                }
+            }
+        };
+
+        // Projections Chart
+        new Chart(document.getElementById('projectionsChart'), {
+            type: 'bar',
+            data: {
+                labels: monthlyData.map(d => d.month),
+                datasets: [
+                    {
+                        label: '2024 Actual',
+                        data: monthlyData.map(d => d.avg2024),
+                        backgroundColor: 'rgba(74, 222, 128, 0.6)',
+                        borderColor: 'rgba(74, 222, 128, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2025 Actual',
+                        data: monthlyData.map(d => d.avg2025),
+                        backgroundColor: 'rgba(250, 204, 21, 0.6)',
+                        borderColor: 'rgba(250, 204, 21, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2026 YoY Projected',
+                        data: monthlyData.map(d => d.proj2026),
+                        backgroundColor: 'rgba(255, 0, 107, 0.6)',
+                        borderColor: 'rgba(255, 0, 107, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2026 Budget (180)',
+                        data: monthlyData.map(() => 180),
+                        type: 'line',
+                        borderColor: 'rgba(74, 222, 128, 1)',
+                        borderWidth: 3,
+                        borderDash: [8, 4],
+                        pointRadius: 0,
+                        fill: false
+                    }
+                ]
+            },
+            options: chartOptions
+        });
+
+        // Timeline Chart
+        new Chart(document.getElementById('timelineChart'), {
+            type: 'line',
+            data: {
+                labels: timelineData.map(d => d.period),
+                datasets: [{
+                    label: 'Tickets',
+                    data: timelineData.map(d => d.tickets),
+                    borderColor: '#00FFD1',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    pointBackgroundColor: timelineData.map(d => {
+                        if (d.year === '2024') return '#4ade80';
+                        if (d.year === '2025') return '#facc15';
+                        if (d.year === '2026-actual') return '#00FFD1';
+                        return '#FF006B';
+                    }),
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    x: {
+                        ...chartOptions.scales.x,
+                        ticks: {
+                            ...chartOptions.scales.x.ticks,
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // Recovery Scenarios Chart
+        new Chart(document.getElementById('recoveryChart'), {
+            type: 'bar',
+            data: {
+                labels: ['A: RTW Focus', 'B: Sponsor Focus', 'C: Diversified', 'D: Franchise'],
+                datasets: [
+                    {
+                        label: 'RTW Tickets',
+                        data: [14000, 5405, 7000, 5405],
+                        backgroundColor: 'rgba(0, 255, 209, 0.7)',
+                        borderColor: 'rgba(0, 255, 209, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'HQ Tickets',
+                        data: [0, 0, 6750, 0],
+                        backgroundColor: 'rgba(255, 0, 107, 0.7)',
+                        borderColor: 'rgba(255, 0, 107, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Sponsorship',
+                        data: [6405, 15000, 6655, 10000],
+                        backgroundColor: 'rgba(250, 204, 21, 0.7)',
+                        borderColor: 'rgba(250, 204, 21, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Franchise',
+                        data: [0, 0, 0, 5000],
+                        backgroundColor: 'rgba(168, 85, 247, 0.7)',
+                        borderColor: 'rgba(168, 85, 247, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#888' }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: { color: '#888' },
+                        grid: { color: '#333' }
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: { 
+                            color: '#888',
+                            callback: function(value) {
+                                return '£' + (value/1000).toFixed(0) + 'k';
+                            }
+                        },
+                        grid: { color: '#333' },
+                        min: 0,
+                        max: 25000
+                    }
+                }
+            }
+        });
+
+        // Revenue Chart
+        const avgTicketPrice = 12.25;
+        const eventsPerMonth = 4;
+        const budgetRevenuePerMonth = 180 * 11.67 * 3; // 180 tickets × £11.67 × ~3 events/month
+        new Chart(document.getElementById('revenueChart'), {
+            type: 'bar',
+            data: {
+                labels: monthlyData.map(d => d.month),
+                datasets: [
+                    {
+                        label: '2024 Revenue',
+                        data: monthlyData.map(d => Math.round(d.avg2024 * avgTicketPrice * eventsPerMonth)),
+                        backgroundColor: 'rgba(74, 222, 128, 0.6)',
+                        borderColor: 'rgba(74, 222, 128, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2025 Revenue',
+                        data: monthlyData.map(d => Math.round(d.avg2025 * avgTicketPrice * eventsPerMonth)),
+                        backgroundColor: 'rgba(250, 204, 21, 0.6)',
+                        borderColor: 'rgba(250, 204, 21, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2026 Revenue (YoY Proj)',
+                        data: monthlyData.map(d => Math.round(d.proj2026 * avgTicketPrice * eventsPerMonth)),
+                        backgroundColor: 'rgba(255, 0, 107, 0.6)',
+                        borderColor: 'rgba(255, 0, 107, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2026 Budget Target',
+                        data: monthlyData.map(() => Math.round(budgetRevenuePerMonth)),
+                        type: 'line',
+                        borderColor: 'rgba(74, 222, 128, 1)',
+                        borderWidth: 3,
+                        borderDash: [8, 4],
+                        pointRadius: 0,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        min: 0,
+                        max: 15000,
+                        ticks: {
+                            ...chartOptions.scales.y.ticks,
+                            callback: function(value) {
+                                return '£' + (value/1000).toFixed(0) + 'k';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
